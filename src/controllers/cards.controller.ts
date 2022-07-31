@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BadRequestError } from "../helpers/api-errors";
+import { BadRequestError, NotFoundError } from "../helpers/api-errors";
 import { cardRepository } from "../repositories/cards.repository";
 
 export class CardController {
@@ -16,5 +16,14 @@ export class CardController {
     await cardRepository.save(newCard);
 
     return res.status(201).send(newCard);
+  }
+
+  async getAll(req: Request, res: Response) {
+    const cards = await cardRepository.find();
+
+    if (cards.length === 0)
+      throw new NotFoundError("Não existem cards cadastrados!");
+
+    return res.send(cards);
   }
 }

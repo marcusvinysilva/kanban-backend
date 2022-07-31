@@ -5,5 +5,6 @@ const cardRoute = Router();
 const cardController = new CardController();
 
 cardRoute.post("/", cardController.create);
+cardRoute.get("/", cardController.getAll)
 
 export default cardRoute;
