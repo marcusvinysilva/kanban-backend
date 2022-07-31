@@ -22,8 +22,26 @@ export class CardController {
     const cards = await cardRepository.find();
 
     if (cards.length === 0)
-      throw new NotFoundError("Não existem cards cadastrados!");
+      throw new NotFoundError("Não existem cards cadastrados");
 
     return res.send(cards);
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const card = await cardRepository.findOneBy({ id: +id });
+    if (!card) throw new NotFoundError("Card não encontrado com esse id");
+
+    const { titulo, conteudo, lista } = req.body;
+    if (!titulo || !conteudo || !lista)
+      throw new BadRequestError(
+        "Você não informou todos os campos para a atualização do card"
+      );
+
+    const cardUpdate = cardRepository.merge(card, req.body);
+
+    const cardUpdated = await cardRepository.save(cardUpdate);
+
+    return res.send(cardUpdated);
   }
 }
