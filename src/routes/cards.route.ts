@@ -6,6 +6,7 @@ const cardController = new CardController();
 
 cardRoute.post("/", cardController.create);
 cardRoute.get("/", cardController.getAll);
-cardRoute.put("/:id", cardController.update)
+cardRoute.put("/:id", cardController.update);
+cardRoute.delete("/:id", cardController.remove)
 
 export default cardRoute;

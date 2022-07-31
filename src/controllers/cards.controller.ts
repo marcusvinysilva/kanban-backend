@@ -44,4 +44,16 @@ export class CardController {
 
     return res.send(cardUpdated);
   }
+
+  async remove(req: Request, res: Response) {
+    const { id } = req.params;
+    const card = await cardRepository.findOneBy({ id: +id });
+    if (!card) throw new NotFoundError("Card não encontrado com esse id");
+
+    await cardRepository.delete(id);
+
+    const cards = await cardRepository.find();
+
+    return res.send(cards);
+  }
 }
