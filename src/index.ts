@@ -3,6 +3,7 @@ import express from "express";
 import cardRoute from "./routes/cards.route";
 import { AppDataSource } from "./data-source";
 import { errorMiddleware } from "./middlewares/error.middleware";
+import authRoute from "./routes/auth.route";
 
 AppDataSource.initialize().then(() => {
   const app = express();
@@ -10,6 +11,7 @@ AppDataSource.initialize().then(() => {
 
   app.use(express.json());
 
+  app.use("/login", authRoute);
   app.use("/cards", cardRoute);
 
   app.use(errorMiddleware);
